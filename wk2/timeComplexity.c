@@ -10,7 +10,7 @@ int f1(int n) {
     return sum;
 }
 
-// Time Complexity:
+// Time Complexity: O(log n)
 int f2(int n) {
     if (n <= 0) {
         return 0;
@@ -18,12 +18,12 @@ int f2(int n) {
     return n + f2(n / 3);
 }
 
-// Time Complexity:
+// Time Complexity: // O(n log n)
 int f3(int n) {
     int count = 0;
     int sum = 0;
-    while (count < (n / 2)) {
-        sum += f2(count);
+    while (count < (n / 2)) {  // run O(n) times
+        sum += f2(count);      // O(log n)
         count++;
     }
     return sum;

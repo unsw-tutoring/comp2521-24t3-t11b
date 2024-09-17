@@ -4,6 +4,20 @@
 
 #include "List.h"
 
+// struct list {
+//     struct node *head;
+// };
+
+// int doListLength(struct node *l) {
+//     if (l == NULL) return 0;
+
+//     // return 1 + ListLength(l->next);
+// }
+
+// int ListLength(struct list *l) {
+//     return doListLength(l->head);
+// }
+
 // create a new empty list
 struct node *ListNew() {
     return NULL;
@@ -34,8 +48,15 @@ List ListAdd(List l, int val) {
 // if 'val' is not in the list, do nothing
 // returns the head of the new linked list
 struct node *ListDelete(struct node *l, int val) {
-    // TODO
-    return NULL;
+    if (l == NULL) return NULL;
+    if (l->data == val) {
+        struct node *newHead = l->next;
+        free(l);
+        return newHead;
+    }
+
+    l->next = ListDelete(l->next, val);
+    return l;
 }
 
 // delete all odd numbers from list -- recursively
@@ -62,21 +83,46 @@ void ListPrintReverse(struct node *l) {
 
 // returns length of linked list
 int ListLength(struct node *l) {
-    // TODO
-    return 0;
+    if (l == NULL) return 0;
+
+    return 1 + ListLength(l->next);
 }
 
 // returns number of odd nodes in linked list
 int ListCountOdd(struct node *l) {
-    // TODO
-    return 0;
-}
+    if (l == NULL) return 0;
 
-// check if list is sorted in non-descending order
+    int n = ListCountOdd(l->next);
+    if (l->data % 2 == 0) {
+        return n;
+    } else {
+        return 1 + n;
+    }
+}
+// int ListCountOdd(struct node *l) {
+//     if (l == NULL) return 0;
+
+//     return (l->data % 2) + ListCountOdd(l->next);
+// }
+
+// check if list is sorted in non-descending order; 1->2->2->3
 bool ListIsSorted(struct node *l) {
-    // TODO
+    if (l == NULL) return true;
+    if (l->next == NULL) return true;
+
+    if (l->data > l->next->data) {
+        return false;
+    }
+
+    bool ifTheRestOfTheListIsSorted = ListIsSorted(l->next);
+    if (ifTheRestOfTheListIsSorted) return true;
     return false;
 }
+
+// bool ListIsSorted(struct node *l) {
+//     if (l == NULL || l->next == NULL) return true;
+//     return (l->data <= l->next->data) && ListIsSorted(l->next);
+// }
 
 // ! THE FOLLOWING TWO EXAMPLES SHOW TWO COMMON TRICKS / TECHNIQUES YOU CAN
 // ! USE WHEN CODING RECURSIVELY. TAKE NOTE OF THESE.
