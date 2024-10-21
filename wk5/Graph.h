@@ -13,4 +13,6 @@ void GraphAddEdge(Graph g, int v, int u);
 
 void GraphRemoveEdge(Graph g, int v, int u);
 
+bool GraphIsAdjacent(Graph g, int v, int u);
+
 #endif

@@ -7,6 +7,22 @@ struct graph {
 };
 
 Graph GraphNew(int nV) {
-    // TODO
-    return NULL;
+    Graph g = malloc(sizeof(struct graph));
+
+    g->nV = nV;
+    g->nE = 0;
+    g->adjMatrix = malloc(nV * sizeof(bool *));
+    for (int i = 0; i < nV; i++) {
+        g->adjMatrix[i] = calloc(nV, sizeof(bool));
+    }
+
+    return g;
+}
+
+void GraphAddEdge(Graph g, int v, int u) {
+    if (g->adjMatrix[v][u]) return;
+
+    g->adjMatrix[v][u] = true;
+    g->adjMatrix[u][v] = true;
+    g->nE++;
 }
