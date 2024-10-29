@@ -37,7 +37,38 @@ then your function should print
 
 #include "Graph.h"
 
+// checks if goal is reachable from curr
+bool isReachable(Graph g, int curr, int goal, bool *visited) {
+    visited[curr] = true;
+
+    if (curr == goal) return true;
+
+    for (int i = 0; i < GraphNumVertices(g); i++) {
+        if (GraphIsAdjacent(g, curr, i) && !visited[i]) {
+            if (isReachable(g, i, goal, visited)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void importantRoads(Graph g) {
-    // TODO
-    return;
+    // loop through every edge in the graph
+    for (int i = 0; i < GraphNumVertices(g); i++) {
+        for (int j = i + 1; j < GraphNumVertices(g); j++) {
+            if (GraphIsAdjacent(g, i, j)) {
+                GraphRemoveEdge(g, i, j);
+                // check if I can still reach every node
+                bool *visited = calloc(GraphNumVertices(g), sizeof(bool));
+                if (!isReachable(g, i, j, visited)) {
+                    printf("%d-%d\n", i, j);
+                }
+                free(visited);
+
+                GraphAddEdge(g, i, j);
+            }
+        }
+    }
 }
